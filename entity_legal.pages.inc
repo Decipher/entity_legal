@@ -1,0 +1,21 @@
+<?php
+/**
+ * @file
+ * Page callbacks for entity_legal module.
+ */
+
+/**
+ * The page view for the entity legal document.
+ *
+ * @param object $entity_legal_document
+ *   The entity object for the document.
+ *
+ * @return string
+ *   The page markup.
+ */
+function entity_legal_document_page($entity_legal_document) {
+  if (is_string($entity_legal_document)) {
+    $entity_legal_document = entity_load_single(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, $entity_legal_document);
+  }
+  return entity_view(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, array($entity_legal_document));
+}

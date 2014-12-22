@@ -118,7 +118,7 @@ class EntityLegalDocumentTestCase extends EntityLegalTestCase {
 
     $document_name = $document->identifier();
 
-    // Log in and check for existance of the created document.
+    // Log in and check for existence of the created document.
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('admin/structure/legal');
     $this->assertText($document_name, 'Document found in overview list');

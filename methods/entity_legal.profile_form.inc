@@ -23,7 +23,7 @@ class EntityLegalMethodProfileForm extends EntityLegalMethod {
    * @param array $form
    *   The user register form to affect.
    */
-  public function execute(&$form) {
+  public function execute(array &$form) {
     $documents = $this->getProfileFormMethodDocuments();
 
     foreach ($documents as $document) {

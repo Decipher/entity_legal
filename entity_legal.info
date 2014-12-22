@@ -7,7 +7,6 @@ dependencies[] = entity
 files[] = entity_legal.entity.inc
 files[] = entity_legal.entity_controller.inc
 files[] = entity_legal.entity_admin.inc
-files[] = entity_legal.features_controller.inc
 
 files[] = methods/entity_legal.method.inc
 files[] = methods/entity_legal.message.inc
@@ -16,7 +15,6 @@ files[] = methods/entity_legal.profile_form.inc
 files[] = methods/entity_legal.redirect.inc
 
 
-files[] = entity_legal.test
 files[] = tests/entity_legal.common.test
 files[] = tests/entity_legal.document.test
 files[] = tests/entity_legal.version.test

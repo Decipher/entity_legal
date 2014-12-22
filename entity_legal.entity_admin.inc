@@ -5,7 +5,7 @@
  */
 
 /**
- * Legal Document entity ui controller
+ * Legal Document entity ui controller.
  */
 class EntityLegalDocumentUIController extends EntityDefaultUIController {
   /**

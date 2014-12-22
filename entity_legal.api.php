@@ -10,6 +10,6 @@
  * @param array $methods
  *   Available methods.
  */
-function hook_entity_legal_document_method(&$methods) {
+function hook_entity_legal_document_method(array &$methods) {
   $methods['email'] = t('Email all users');
 }

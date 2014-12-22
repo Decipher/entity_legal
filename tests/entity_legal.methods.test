@@ -25,7 +25,7 @@ class EntityLegalMethodsTestCase extends EntityLegalTestCase {
         'require_method' => 'message',
       ),
     ));
-    $version = $this->createDocumentVersion($document, TRUE);
+    $this->createDocumentVersion($document, TRUE);
 
     $acceptance_message = format_string('Please accept the @title', array(
       '@title' => entity_legal_document_title($document),
@@ -50,7 +50,7 @@ class EntityLegalMethodsTestCase extends EntityLegalTestCase {
     $this->assertNoLinkByHref(url($document_path), 0, 'Link to document not found');
     $this->assertNoText($acceptance_message, 'Document message not found');
 
-    $version_2 = $this->createDocumentVersion($document, TRUE);
+    $this->createDocumentVersion($document, TRUE);
 
     $this->drupalGet('');
 
@@ -62,7 +62,7 @@ class EntityLegalMethodsTestCase extends EntityLegalTestCase {
   }
 
   /**
-   * jQuery UI dialog method test.
+   * JQuery UI dialog method test.
    */
   public function testPopupMethod() {
     $document = $this->createDocument(TRUE, TRUE, array(
@@ -70,7 +70,7 @@ class EntityLegalMethodsTestCase extends EntityLegalTestCase {
         'require_method' => 'popup',
       ),
     ));
-    $version = $this->createDocumentVersion($document, TRUE);
+    $this->createDocumentVersion($document, TRUE);
 
     $account = $this->createUserWithAcceptancePermissions($document);
     $this->drupalLogin($account);
@@ -93,7 +93,7 @@ class EntityLegalMethodsTestCase extends EntityLegalTestCase {
     $this->assertFalse(isset($js_settings['entityLegalPopup']), 'Popup javascript settings not found');
 
     // Create a new version.
-    $version_2 = $this->createDocumentVersion($document, TRUE);
+    $this->createDocumentVersion($document, TRUE);
 
     // Visit the home page and ensure that the user must re-accept.
     $this->drupalGet('');
@@ -111,7 +111,7 @@ class EntityLegalMethodsTestCase extends EntityLegalTestCase {
         'require_method' => 'form_link',
       ),
     ));
-    $version = $this->createDocumentVersion($document, TRUE);
+    $this->createDocumentVersion($document, TRUE);
 
     $this->drupalGet('user/register');
     $this->assertFieldByName('legal_' . $document->identifier(), NULL, 'Agree checkbox found');
@@ -131,7 +131,7 @@ class EntityLegalMethodsTestCase extends EntityLegalTestCase {
         'require_method' => 'form_inline',
       ),
     ));
-    $version = $this->createDocumentVersion($document, TRUE);
+    $this->createDocumentVersion($document, TRUE);
 
     $this->drupalGet('user/register');
     $this->assertFieldByName('legal_' . $document->identifier(), NULL, 'Agree checkbox found');
@@ -148,7 +148,7 @@ class EntityLegalMethodsTestCase extends EntityLegalTestCase {
         'require_method' => 'redirect',
       ),
     ));
-    $version = $this->createDocumentVersion($document, TRUE);
+    $this->createDocumentVersion($document, TRUE);
 
     $account = $this->createUserWithAcceptancePermissions($document);
     $this->drupalLogin($account);

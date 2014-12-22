@@ -110,6 +110,7 @@ class EntityLegalDocumentVersionUIController extends EntityDefaultUIController {
     $bundle_argument = 4;
 
     // Add bundle to add form.
+    $items[$this->path . '/add']['title'] = 'Add new version';
     $items[$this->path . '/add']['page callback'] = 'entity_legal_document_version_ui_get_form';
     $items[$this->path . '/add']['page arguments'] = array(
       NULL,

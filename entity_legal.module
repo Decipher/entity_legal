@@ -200,8 +200,8 @@ function entity_legal_menu() {
   $items = array();
 
   $items['legal/document/%entity_legal_document'] = array(
-    'title callback' => 'entity_label',
-    'title arguments' => array(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, 2),
+    'title callback' => 'entity_legal_document_title',
+    'title arguments' => array(2),
     'page callback' => 'entity_legal_document_page',
     'page arguments' => array(2),
     'access arguments' => array('view', 2),
@@ -250,6 +250,20 @@ function entity_legal_document_load($entity) {
   }
 
   return $entity;
+}
+
+/**
+ * Get the title of a given document from its corresponding document version.
+ *
+ * @param EntityLegalDocument $document
+ *   The legal document to get the version title from.
+ *
+ * @return string
+ *   The title of the legal document from the published version.
+ */
+function entity_legal_document_title(EntityLegalDocument $document) {
+  $current_version = $document->getPublishedVersion();
+  return entity_label(ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME, $current_version);
 }
 
 /**

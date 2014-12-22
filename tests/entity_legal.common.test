@@ -39,7 +39,8 @@ abstract class EntityLegalTestCase extends DrupalWebTestCase {
    *   The retrieved entity.
    */
   public function getUncachedEntity($entity_type, $entity_id) {
-    return array_pop(entity_load($entity_type, array($entity_id), array(), TRUE));
+    $entities = entity_load($entity_type, array($entity_id), array(), TRUE);
+    return array_pop($entities);
   }
 
   /**

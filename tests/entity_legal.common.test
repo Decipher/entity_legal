@@ -5,7 +5,7 @@
  */
 
 abstract class EntityLegalTestCase extends DrupalWebTestCase {
-  /**as
+  /**
    * The administrative user to use for tests.
    */
   protected $adminUser;
@@ -77,11 +77,13 @@ abstract class EntityLegalTestCase extends DrupalWebTestCase {
    *
    * @param EntityLegalDocument $document
    *   The document to add the version to.
+   * @param bool $save_as_default
+   *   Whether to save the version as the default for the document.
    *
    * @return EntityLegalDocumentVersion
    *   The created legal document version.
    */
-  protected function createDocumentVersion(EntityLegalDocument $document) {
+  protected function createDocumentVersion(EntityLegalDocument $document, $save_as_default = FALSE) {
     $entity = entity_create(ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME, array(
       'name' => $this->randomName(64),
       'document_name' => $document->identifier(),
@@ -96,6 +98,12 @@ abstract class EntityLegalTestCase extends DrupalWebTestCase {
       ),
     ));
     $entity->save();
+
+    if ($save_as_default) {
+      $document->setPublishedVersion($entity);
+      $document->save();
+    }
+
     return $entity;
   }
 
@@ -117,5 +125,23 @@ abstract class EntityLegalTestCase extends DrupalWebTestCase {
     ));
     $entity->save();
     return $entity;
+  }
+
+  /**
+   * Create an account that is able to view and re-accept a given document.
+   *
+   * @param EntityLegalDocument $document
+   *   The legal document the user is able to view and accept.
+   *
+   * @return object
+   *   The user
+   */
+  protected function createUserWithAcceptancePermissions(EntityLegalDocument $document) {
+    $account = $this->drupalCreateUser(array(
+      $document->getPermissionView(),
+      $document->getPermissionExistingUser(),
+    ));
+
+    return $account;
   }
 }

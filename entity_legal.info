@@ -21,3 +21,4 @@ files[] = tests/entity_legal.common.test
 files[] = tests/entity_legal.document.test
 files[] = tests/entity_legal.version.test
 files[] = tests/entity_legal.acceptance.test
+files[] = tests/entity_legal.methods.test

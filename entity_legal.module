@@ -270,9 +270,6 @@ function entity_legal_document_title(EntityLegalDocument $document) {
  * Implements hook_init().
  */
 function entity_legal_init() {
-  $acceptance_method = new EntityLegalMethodMessage();
-  $acceptance_method->execute();
-
   $redirect_method = new EntityLegalMethodRedirect();
   $redirect_method->execute();
 
@@ -280,6 +277,13 @@ function entity_legal_init() {
   $popup_method->execute();
 }
 
+/**
+ * Implements template_preprocess_page().
+ */
+function entity_legal_preprocess_page(&$variable) {
+  $acceptance_method = new EntityLegalMethodMessage();
+  $acceptance_method->execute();
+}
 
 /**
  * Get all active legal documents on the site.

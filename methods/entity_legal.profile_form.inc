@@ -45,7 +45,8 @@ class EntityLegalMethodProfileForm extends EntityLegalMethod {
           break;
 
         case 'form_inline':
-          $form[$field_name]['#prefix'] = render($document->view());
+          $document_render_array = entity_view(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, array($document));
+          $form[$field_name]['#prefix'] = render($document_render_array);
           break;
       }
     }

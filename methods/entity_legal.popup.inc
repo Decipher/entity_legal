@@ -12,12 +12,14 @@ class EntityLegalMethodPopup extends EntityLegalMethod {
     $documents = $this->getDocumentsForMethod($method, ENTITY_LEGAL_USER_EXISTING);
 
     foreach ($documents as $document) {
+      $document_markup = $document->view();
+
       drupal_add_library('system', 'ui.dialog');
       drupal_add_js(array(
         'entityLegalPopup' => array(
           array(
             'popupTitle' => $document->getVersionLabel(),
-            'popupContent' => render($document->view()),
+            'popupContent' => render($document_markup),
           ),
         ),
       ), 'setting');

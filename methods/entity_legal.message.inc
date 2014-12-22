@@ -14,10 +14,10 @@ class EntityLegalMethodMessage extends EntityLegalMethod {
     foreach ($documents as $document) {
       $entity_uri = $document->uri();
       $message = t('Please accept the !document_name.', array(
-        '!document_name' => l($document->label(), $entity_uri['path']),
+        '!document_name' => l(entity_legal_document_title($document), $entity_uri['path']),
       ));
 
-      drupal_set_message($message, 'warning');
+      drupal_set_message($message, 'warning', FALSE);
     }
   }
 }

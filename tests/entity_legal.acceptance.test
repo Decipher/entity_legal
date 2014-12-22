@@ -17,13 +17,11 @@ class EntityLegalDocumentAcceptanceTestCase extends EntityLegalTestCase {
   }
 
   /**
-   * Test the overview page contains a list of entities.
+   * Test that user has the ability to agree to legal documents.
    */
   public function testSubmissionForm() {
     $document = $this->createDocument(TRUE, TRUE);
-    $version = $this->createDocumentVersion($document);
-    $document->setPublishedVersion($version);
-    $document->save();
+    $version = $this->createDocumentVersion($document, TRUE);
 
     $acceptance_user = $this->drupalCreateUser(array(
       $document->getPermissionView(),
@@ -51,9 +49,7 @@ class EntityLegalDocumentAcceptanceTestCase extends EntityLegalTestCase {
     $document = $this->getUncachedEntity(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, $document->identifier());
     $this->assertTrue($document->userHasAgreed($acceptance_user), 'User has accepted');
 
-    $new_version = $this->createDocumentVersion($document);
-    $document->setPublishedVersion($new_version);
-    $document->save();
+    $new_version = $this->createDocumentVersion($document, TRUE);
 
     $document = $this->getUncachedEntity(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, $document->identifier());
     $this->assertFalse($document->userHasAgreed($acceptance_user), 'User has not accepted new version');

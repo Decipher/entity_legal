@@ -5,7 +5,7 @@
  */
 
 abstract class EntityLegalTestCase extends DrupalWebTestCase {
-  /**
+  /**as
    * The administrative user to use for tests.
    */
   protected $adminUser;

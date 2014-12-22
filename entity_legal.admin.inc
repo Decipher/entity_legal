@@ -67,7 +67,6 @@ function entity_legal_document_form($form, &$form_state, EntityLegalDocument $en
       '#empty' => t('Create a document version to set up a default'),
       '#multiple' => FALSE,
       '#default_value' => isset($entity->published_version) ? $entity->published_version : '',
-      '#required' => TRUE,
     );
   }
 

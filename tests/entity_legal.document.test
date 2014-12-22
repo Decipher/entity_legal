@@ -95,9 +95,9 @@ class EntityLegalDocumentTestCase extends EntityLegalTestCase {
     $new_label = $this->randomName();
     $this->drupalPost('admin/structure/legal/manage/' . $document->identifier(), array(
       'label' => $new_label,
-      'settings[new_users][require]' => 0,
+      'settings[new_users][require]' => FALSE,
       'settings[new_users][require_method]' => 'form_link',
-      'settings[existing_users][require]' => 0,
+      'settings[existing_users][require]' => FALSE,
       'settings[existing_users][require_method]' => 'popup',
     ), 'Save');
 
@@ -118,10 +118,16 @@ class EntityLegalDocumentTestCase extends EntityLegalTestCase {
 
     $document_name = $document->identifier();
 
+    // Log in and check for existance of the created document.
     $this->drupalLogin($this->adminUser);
+    $this->drupalGet('admin/structure/legal');
+    $this->assertText($document_name, 'Document found in overview list');
+
+    // Delete the document.
     $this->drupalPost('admin/structure/legal/manage/' . $document_name . '/delete', array(), 'Confirm');
 
-    $document = entity_load_single(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, $document_name);
-    $this->assertTrue(empty($document), 'Document deleted successfully');
+    // Ensure document no longer exists on the overview page.
+    $this->assertUrl('admin/structure/legal', array(), 'Returned to overview page after deletion');
+    $this->assertNoText($document_name, 'Document not found in overview list');
   }
 }

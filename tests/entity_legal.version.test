@@ -4,6 +4,9 @@
  * Test for legal document version entity admin ui.
  */
 
+/**
+ * Simpletest class for document versioning.
+ */
 class EntityLegalDocumentVersionTestCase extends EntityLegalTestCase {
   /**
    * {@inheritdoc}

@@ -1,9 +1,12 @@
 <?php
 /**
  * @file
- * Method class for alerting existing users via a jQuery UI popup window.
+ * Method include file for 'popup'.
  */
 
+/**
+ * Method class for alerting existing users via a jQuery UI popup window.
+ */
 class EntityLegalMethodPopup extends EntityLegalMethod {
   /**
    * Execution method for popup method.

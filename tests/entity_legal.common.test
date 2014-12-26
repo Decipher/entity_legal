@@ -1,9 +1,12 @@
 <?php
 /**
  * @file
- * Common test class for Entity Legal.
+ * Common test class file.
  */
 
+/**
+ * Common Simpletest class for all legal tests.
+ */
 abstract class EntityLegalTestCase extends DrupalWebTestCase {
   /**
    * The administrative user to use for tests.

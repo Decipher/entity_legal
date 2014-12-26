@@ -4,6 +4,9 @@
  * Test for defined methods in Entity Legal module.
  */
 
+/**
+ * Simpletest class for acceptance methods.
+ */
 class EntityLegalMethodsTestCase extends EntityLegalTestCase {
   /**
    * {@inheritdoc}

@@ -1,9 +1,12 @@
 <?php
 /**
  * @file
- * Test for legal document acceptance ui.
+ * Test file for legal document acceptance ui.
  */
 
+/**
+ * Simpletest class for legal document acceptance entities.
+ */
 class EntityLegalDocumentAcceptanceTestCase extends EntityLegalTestCase {
   /**
    * {@inheritdoc}

@@ -1,11 +1,14 @@
 <?php
 /**
  * @file
+ * Method include file for common base class.
+ */
+
+/**
  * Base class for entity_legal methods.
  *
  * Provides helper functions for methods to use.
  */
-
 abstract class EntityLegalMethod {
   /**
    * Get all Entity Legal Documents for a given user type and method.

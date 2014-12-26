@@ -1,9 +1,12 @@
 <?php
 /**
  * @file
- * Method class for displaying a checkbox on the user register form.
+ * Method include file for 'form_link' and 'form_inline'.
  */
 
+/**
+ * Method class for displaying a checkbox on the user register form.
+ */
 class EntityLegalMethodProfileForm extends EntityLegalMethod {
   /**
    * Get all legal document entities with profile form methods.

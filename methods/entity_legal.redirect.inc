@@ -1,9 +1,12 @@
 <?php
 /**
  * @file
- * Method class for redirecting existing users to accept a legal document.
+ * Method include file for 'redirect'.
  */
 
+/**
+ * Method class for redirecting existing users to accept a legal document.
+ */
 class EntityLegalMethodRedirect extends EntityLegalMethod {
   /**
    * Execution method for redirect method.

@@ -1,9 +1,12 @@
 <?php
 /**
  * @file
- * Method class for alerting existing users via Drupal set message.
+ * Method include file for 'message'.
  */
 
+/**
+ * Method class for alerting existing users via Drupal set message.
+ */
 class EntityLegalMethodMessage extends EntityLegalMethod {
   /**
    * Execution method for message method.

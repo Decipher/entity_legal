@@ -45,9 +45,19 @@ class EntityLegalDocumentController extends EntityAPIControllerExportable {
    * {@inheritdoc}
    */
   public function delete($ids, DatabaseTransaction $transaction = NULL) {
+    // Delete all associated versions.
     foreach ($ids as $document_name) {
-      $document_field_instance = field_info_instance(ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME, 'entity_legal_document_text', $document_name);
-      field_purge_instance($document_field_instance);
+      $version_query = new EntityFieldQuery();
+      $version_query->entityCondition('entity_type', ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME)
+        ->propertyCondition('document_name', $document_name);
+
+      $version_result = $version_query->execute();
+
+      if (!empty($version_result) && !empty($version_result[ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME])) {
+        foreach (array_keys($version_result[ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME]) as $version_name) {
+          entity_delete(ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME, $version_name);
+        }
+      }
     }
 
     parent::delete($ids, $transaction);
@@ -94,6 +104,9 @@ class EntityLegalDocumentController extends EntityAPIControllerExportable {
   }
 }
 
+/**
+ * Legal document version exportable controller.
+ */
 class EntityLegalDocumentVersionController extends EntityAPIControllerExportable {
   /**
    * {@inheritdoc}

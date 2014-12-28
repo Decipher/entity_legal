@@ -164,6 +164,9 @@ function entity_legal_document_form_submit(&$form, &$form_state) {
     $form_state['redirect'] = 'admin/structure/legal/manage/' . $document_entity->identifier() . '/add';
   }
 
+  // Sanitize label to avoid XSS attacks.
+  $form_state['values']['label'] = check_plain($form_state['values']['label']);
+
   $document_entity->save();
 }
 
@@ -230,6 +233,10 @@ function entity_legal_document_version_form_submit(&$form, &$form_state) {
     $entity_legal_document->setPublishedVersion($version_entity);
     $entity_legal_document->save();
   }
+
+  // Sanitize labels to avoid XSS attacks.
+  $form_state['values']['label'] = check_plain($form_state['values']['label']);
+  $form_state['values']['acceptance_label'] = check_plain($form_state['values']['label']);
 
   $form_state['redirect'] = 'admin/structure/legal/manage/' . $version_entity->document_name;
 }

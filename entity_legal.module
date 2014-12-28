@@ -265,9 +265,9 @@ function entity_legal_document_title(EntityLegalDocument $document) {
 }
 
 /**
- * Implements hook_init().
+ * Implements hook_page_build().
  */
-function entity_legal_init() {
+function entity_legal_page_build(&$page) {
   $redirect_method = new EntityLegalMethodRedirect();
   $redirect_method->execute();
 

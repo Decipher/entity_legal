@@ -61,6 +61,25 @@ class EntityLegalDocument extends Entity {
   }
 
   /**
+   * Get the label of the legal document entity.
+   *
+   * @param bool $sanitize
+   *   Whether or not to sanitize the label, defaults to TRUE.
+   *
+   * @return string
+   *   The label string.
+   */
+  public function label($sanitize = FALSE) {
+    $label_text = isset($this->label) ? $this->label : '';
+
+    if ($sanitize) {
+      $label_text = check_plain($label_text);
+    }
+
+    return $label_text;
+  }
+
+  /**
    * Get a new version of this legal document.
    *
    * @return LegalDocumentVersion
@@ -113,6 +132,7 @@ class EntityLegalDocument extends Entity {
     }
 
     $this->published_version = $version_entity->identifier();
+
     return TRUE;
   }
 
@@ -125,7 +145,7 @@ class EntityLegalDocument extends Entity {
   public function getVersionLabel() {
     $version_entity = $this->getPublishedVersion();
     if ($version_entity) {
-      return $version_entity->label();
+      return check_plain($version_entity->label());
     }
     else {
       return FALSE;
@@ -149,13 +169,6 @@ class EntityLegalDocument extends Entity {
   }
 
   /**
-   * Return the document administrative label.
-   */
-  public function label() {
-    return isset($this->label) ? $this->label : '';
-  }
-
-  /**
    * URI callback.
    */
   public function uri() {
@@ -176,7 +189,7 @@ class EntityLegalDocument extends Entity {
       $label = $published_version->acceptance_label;
     }
 
-    return $label;
+    return check_plain($label);
   }
 
   /**
@@ -249,6 +262,7 @@ class EntityLegalDocument extends Entity {
       global $user;
       $account = $user;
     }
+
     return count($this->getAcceptances($account)) > 0;
   }
 
@@ -312,6 +326,7 @@ class EntityLegalDocument extends Entity {
    */
   public function getAcceptanceDeliveryMethod($new_user = FALSE) {
     $setting_group = $new_user ? 'new_users' : 'existing_users';
+
     return $this->getSetting($setting_group, 'require_method');
   }
 }

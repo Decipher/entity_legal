@@ -326,7 +326,7 @@ function entity_legal_document_acceptance_form($form, &$form_state, EntityLegalD
   $has_agreed = $entity_legal_document->userHasAgreed();
 
   $form['agree'] = array(
-    '#title' => $entity_legal_document->getAcceptanceLabel(),
+    '#title' => check_plain($entity_legal_document->getAcceptanceLabel()),
     '#type' => 'checkbox',
     '#required' => TRUE,
     '#default_value' => $has_agreed,
@@ -403,9 +403,9 @@ function entity_legal_field_extra_fields() {
 
   foreach ($documents as $document) {
     $extra['user']['user']['form']['legal_' . $document->identifier()] = array(
-      'label' => $document->getVersionLabel(),
+      'label' => check_plain($document->getVersionLabel()),
       'description' => t('Checkbox for accepting !link', array(
-        '!link' => l($document->label(), 'admin/structure/legal/manage/' . $document->identifier()),
+        '!link' => l($document->label(TRUE), 'admin/structure/legal/manage/' . $document->identifier()),
       )),
       'weight' => -4,
     );

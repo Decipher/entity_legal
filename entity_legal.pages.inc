@@ -13,9 +13,6 @@
  * @return string
  *   The page markup.
  */
-function entity_legal_document_page($entity_legal_document) {
-  if (is_string($entity_legal_document)) {
-    $entity_legal_document = entity_load_single(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, $entity_legal_document);
-  }
+function entity_legal_document_page(Entity $entity_legal_document) {
   return entity_view(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, array($entity_legal_document));
 }

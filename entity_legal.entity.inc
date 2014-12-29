@@ -145,7 +145,7 @@ class EntityLegalDocument extends Entity {
   public function getVersionLabel() {
     $version_entity = $this->getPublishedVersion();
     if ($version_entity) {
-      return check_plain($version_entity->label());
+      return $version_entity->label(TRUE);
     }
     else {
       return FALSE;
@@ -340,6 +340,25 @@ class EntityLegalDocumentVersion extends Entity {
    */
   public function __construct(array $values = array(), $entity_type = NULL) {
     Entity::__construct($values, ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME);
+  }
+
+  /**
+   * Get the label of the legal document version entity.
+   *
+   * @param bool $sanitize
+   *   Whether or not to sanitize the label, defaults to TRUE.
+   *
+   * @return string
+   *   The label string.
+   */
+  public function label($sanitize = FALSE) {
+    $label_text = isset($this->label) ? $this->label : '';
+
+    if ($sanitize) {
+      $label_text = check_plain($label_text);
+    }
+
+    return $label_text;
   }
 
   /**

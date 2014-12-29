@@ -40,7 +40,7 @@ class EntityLegalDocumentUIController extends EntityDefaultUIController {
     $row[] = array(
       'data' => array(
         '#theme' => 'entity_ui_overview_item',
-        '#label' => entity_label($this->entityType, $entity),
+        '#label' => check_plain(entity_label($this->entityType, $entity)),
         '#name' => !empty($this->entityInfo['exportable']) ? entity_id($this->entityType, $entity) : FALSE,
         '#url' => $entity_uri ? $entity_uri : FALSE,
         '#entity_type' => $this->entityType,

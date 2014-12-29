@@ -196,7 +196,7 @@ function entity_legal_document_version_form($form, &$form_state, EntityLegalDocu
     '#title' => t('Acceptance label'),
     '#type' => 'textfield',
     '#description' => t('e.g. I agree to the terms and conditions'),
-    '#default_value' => isset($entity->acceptance_label) ? $entity->acceptance_label : 'I agree',
+    '#default_value' => isset($entity->acceptance_label) ? $entity->acceptance_label : t('I agree'),
     '#weight' => 50,
   );
 

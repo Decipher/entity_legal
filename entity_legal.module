@@ -226,6 +226,15 @@ function entity_legal_menu() {
     'file' => 'entity_legal.pages.inc',
   );
 
+  $items['legal/document/%entity_legal_document/%entity_legal_document_version'] = array(
+    'title callback' => 'entity_legal_document_title',
+    'title arguments' => array(2),
+    'page callback' => 'entity_legal_document_page',
+    'page arguments' => array(2, 3),
+    'access arguments' => array('administer entity legal'),
+    'file' => 'entity_legal.pages.inc',
+  );
+
   return $items;
 }
 
@@ -264,6 +273,19 @@ function entity_legal_document_load($entity) {
     $entity_name = str_replace('-', '_', $entity);
 
     return entity_load_single(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, $entity_name);
+  }
+
+  return $entity;
+}
+
+/**
+ * Implements hook_WILDCARD_load().
+ */
+function entity_legal_document_version_load($entity) {
+  if (is_string($entity)) {
+    $entity_name = str_replace('-', '_', $entity);
+
+    return entity_load_single(ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME, $entity_name);
   }
 
   return $entity;

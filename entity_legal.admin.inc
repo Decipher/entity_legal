@@ -46,7 +46,7 @@ function entity_legal_document_form($form, &$form_state, EntityLegalDocument $en
 
     foreach ($versions as $document_version_entity) {
       $options[$document_version_entity->identifier()] = array(
-        'title' => $document_version_entity->label(TRUE),
+        'title' => l($document_version_entity->label(TRUE), 'legal/document/' . $entity->identifier() . '/' . $document_version_entity->identifier()),
         'created' => $document_version_entity->getFormattedDate('created'),
         'updated' => $document_version_entity->getFormattedDate('updated'),
         'operations' => l(t('Edit'), 'admin/structure/legal/manage/' . $entity->identifier() . '/manage/' . $document_version_entity->identifier()),

@@ -80,6 +80,18 @@ class EntityLegalDocumentUIController extends EntityDefaultUIController {
 
     return $row;
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hook_forms() {
+    $forms = parent::hook_forms();
+
+    // Rewrite form ids to include the module name as a prefix.
+    $forms[$this->entityType . '_form']['callback'] = 'entity_legal_document_form';
+
+    return $forms;
+  }
 }
 
 /**
@@ -135,5 +147,20 @@ class EntityLegalDocumentVersionUIController extends EntityDefaultUIController {
     );
 
     return $items;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hook_forms() {
+    $forms = parent::hook_forms();
+
+    // Rewrite form ids to include the module name as a prefix.
+    if (!(count($this->entityInfo['bundles']) == 1 && isset($this->entityInfo['bundles'][$this->entityType]))) {
+      foreach ($this->entityInfo['bundles'] as $bundle => $bundle_info) {
+        $forms[$this->entityType . '_edit_' . $bundle . '_form']['callback'] = 'entity_legal_document_version_form';
+      }
+    }
+    return $forms;
   }
 }

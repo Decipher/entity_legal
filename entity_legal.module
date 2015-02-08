@@ -149,6 +149,25 @@ function entity_legal_entity_property_info() {
 }
 
 /**
+ * Implements hook_entity_info_alter().
+ */
+function entity_legal_entity_info_alter(&$entity_info) {
+  foreach (entity_legal_get_types() as $type => $info) {
+    $entity_info[ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME]['bundles'][$type] = array(
+      'label' => $info->label,
+    );
+  }
+}
+
+/**
+ * Gets an array of all legal document types, keyed by the type name.
+ */
+function entity_legal_get_types($type_name = NULL) {
+  $types = entity_load_multiple_by_name(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, isset($type_name) ? array($type_name) : FALSE);
+  return isset($type_name) ? reset($types) : $types;
+}
+
+/**
  * Callback for getting legal entity properties.
  */
 function entity_legal_get_properties($entity, array $options, $name, $entity_type) {
@@ -369,26 +388,6 @@ function entity_legal_views_api() {
   return array(
     'api' => '3',
   );
-}
-
-/**
- * Implements hook_forms().
- *
- * Ensure all document version forms use the same handler despite having
- * different bundles.
- */
-function entity_legal_forms() {
-  $forms = array();
-
-  $forms[ENTITY_LEGAL_DOCUMENT_ENTITY_NAME . '_form']['callback'] = 'entity_legal_document_form';
-
-  if ($documents = entity_legal_get_all_documents(FALSE)) {
-    foreach (array_keys($documents) as $type) {
-      $forms[ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME . '_edit_' . $type . '_form']['callback'] = 'entity_legal_document_version_form';
-    }
-  }
-
-  return $forms;
 }
 
 /**

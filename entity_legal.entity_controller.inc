@@ -38,7 +38,12 @@ class EntityLegalDocumentController extends EntityAPIControllerExportable {
       field_create_instance($instance);
     }
 
-    return parent::save($entity);
+    $success = parent::save($entity);
+
+    // Flush the entity info cache to allow the new bundle to be registered.
+    entity_info_cache_clear();
+
+    return $success;
   }
 
   /**

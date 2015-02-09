@@ -22,6 +22,11 @@ abstract class EntityLegalMethod {
    *   All published entity legal documents required for the given user type.
    */
   public function getDocumentsForMethod($method, $user_type = ENTITY_LEGAL_USER_EXISTING) {
+    // Entity Legal administrators should never be forced to accept documents.
+    if (user_access('administer legal documents')) {
+      return array();
+    }
+
     // Don't run method for anonymous users.
     if ($user_type == ENTITY_LEGAL_USER_EXISTING && user_is_anonymous()) {
       return array();

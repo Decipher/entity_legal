@@ -45,8 +45,17 @@ function entity_legal_document_form($form, &$form_state, EntityLegalDocument $en
     $options = array();
 
     foreach ($versions as $document_version_entity) {
+      // Use the default uri if this version is the current published version.
+      if ($entity->getPublishedVersion() && $entity->getPublishedVersion()->identifier() == $document_version_entity->identifier()) {
+        $entity_uri = $entity->uri();
+        $path = $entity_uri['path'];
+      }
+      else {
+        $path = 'legal/document/' . $entity->identifier() . '/' . $document_version_entity->identifier();
+      }
+
       $options[$document_version_entity->identifier()] = array(
-        'title' => l($document_version_entity->label(TRUE), 'legal/document/' . $entity->identifier() . '/' . $document_version_entity->identifier()),
+        'title' => l($document_version_entity->label(TRUE), $path),
         'created' => $document_version_entity->getFormattedDate('created'),
         'updated' => $document_version_entity->getFormattedDate('updated'),
         'operations' => l(t('Edit'), 'admin/structure/legal/manage/' . $entity->identifier() . '/manage/' . $document_version_entity->identifier()),
@@ -133,6 +142,8 @@ function entity_legal_document_form($form, &$form_state, EntityLegalDocument $en
     ),
   );
 
+  _entity_legal_document_form_add_path_settings($form, $form_state, $entity, $op);
+
   $form['actions'] = array(
     '#type' => 'actions',
     '#weight' => 28,
@@ -152,6 +163,59 @@ function entity_legal_document_form($form, &$form_state, EntityLegalDocument $en
 }
 
 /**
+ * Add path and pathauto settings to an existing legal document form.
+ */
+function _entity_legal_document_form_add_path_settings(&$form, &$form_state, EntityLegalDocument $entity, $op) {
+  if (!module_exists('path')) {
+    return;
+  }
+
+  $path = array();
+
+  if (!in_array($op, array('add', 'clone'))) {
+    $default_uri = $entity->uri();
+    $conditions = array('source' => $default_uri['path']);
+    $path = path_load($conditions);
+    if ($path === FALSE) {
+      $path = array();
+    }
+  }
+
+  $path += array(
+    'pid' => NULL,
+    'source' => isset($form['#node']->nid) ? 'node/' . $form['#node']->nid : NULL,
+    'alias' => '',
+  );
+
+  $form['path'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('URL path settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => empty($path['alias']),
+    '#group' => 'settings',
+    '#attributes' => array(
+      'class' => array('path-form'),
+    ),
+    '#attached' => array(
+      'js' => array(drupal_get_path('module', 'path') . '/path.js'),
+    ),
+    '#access' => user_access('create url aliases') || user_access('administer url aliases'),
+    '#weight' => 5,
+    '#tree' => TRUE,
+    '#element_validate' => array('path_form_element_validate'),
+  );
+  $form['path']['alias'] = array(
+    '#type' => 'textfield',
+    '#title' => t('URL alias'),
+    '#default_value' => $path['alias'],
+    '#maxlength' => 255,
+    '#description' => t('Optionally specify an alternative URL by which this content can be accessed. For example, type "about" when writing an about page. Use a relative path and don\'t add a trailing slash or the URL alias won\'t work.'),
+  );
+  $form['path']['pid'] = array('#type' => 'value', '#value' => $path['pid']);
+  $form['path']['source'] = array('#type' => 'value', '#value' => $path['source']);
+}
+
+/**
  * Form submit handler for saving a legal document revision.
  */
 function entity_legal_document_form_submit(&$form, &$form_state) {
@@ -165,6 +229,20 @@ function entity_legal_document_form_submit(&$form, &$form_state) {
   }
 
   $document_entity->save();
+
+  if (!empty($form_state['values']['path']) && !empty($form_state['values']['path']['alias'])) {
+    $path = $form_state['values']['path'];
+    $path['alias'] = trim($path['alias']);
+
+    // Delete old alias if user erased it.
+    if (!empty($path['pid']) && empty($path['alias'])) {
+      path_delete($path['pid']);
+    }
+
+    $default_uri = $document_entity->uri();
+    $path['source'] = $default_uri['path'];
+    path_save($path);
+  }
 }
 
 /**

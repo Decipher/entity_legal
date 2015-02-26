@@ -241,3 +241,52 @@ function entity_legal_schema() {
 
   return $schema;
 }
+
+/**
+ * Re-name legal entities in Field API, for users of 1.0.
+ */
+function entity_legal_update_7001() {
+  // Update field config.
+  $configs = db_select('field_config', 'f')
+    ->fields('f')
+    ->condition('field_name', 'entity_legal_document_text')
+    ->execute()
+    ->fetchAllAssoc('id');
+
+  foreach ($configs as $config) {
+    $config->data = unserialize($config->data);
+    $config->data['entity_types'][0] = ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME;
+    $config->data = serialize($config->data);
+
+    db_update('field_config')
+      ->condition('id', $config->id)
+      ->fields((array) $config)
+      ->execute();
+  }
+
+  // Update config instances.
+  db_update('field_config_instance')
+    ->condition('entity_type', 'legal_document_version')
+    ->fields(array(
+      'entity_type' => ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME,
+    ))
+    ->execute();
+
+  // Update field data.
+  db_update('field_data_entity_legal_document_text')
+    ->condition('entity_type', 'legal_document_version')
+    ->fields(array(
+      'entity_type' => ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME,
+    ))
+    ->execute();
+
+  // Update field revision data.
+  db_update('field_revision_entity_legal_document_text')
+    ->condition('entity_type', 'legal_document_version')
+    ->fields(array(
+      'entity_type' => ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME,
+    ))
+    ->execute();
+
+  cache_clear_all();
+}

@@ -63,6 +63,19 @@ class EntityLegalDocumentController extends EntityAPIControllerExportable {
           entity_delete(ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME, $version_name);
         }
       }
+
+      // Delete field instance.
+      $instances = field_read_instances(array(
+        'entity_type' => 'entity_legal_document_version',
+        'bundle' => $document_name,
+      ), array(
+        'include_inactive' => FALSE,
+        'include_deleted' => FALSE,
+      ));
+
+      foreach ($instances as $instance) {
+        field_delete_instance($instance, FALSE);
+      }
     }
 
     parent::delete($ids, $transaction);

@@ -108,12 +108,15 @@ class EntityLegalDocument extends Entity {
    *   The current legal document version or FALSE if none found.
    */
   public function getPublishedVersion() {
-    if (empty($this->published_version)) {
-      return FALSE;
+    $published_version = FALSE;
+
+    drupal_alter('entity_legal_published_version', $this->published_version, $this);
+
+    if (!empty($this->published_version)) {
+      $published_version = entity_load_single(ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME, $this->published_version);
     }
-    else {
-      return entity_load_single(ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME, $this->published_version);
-    }
+
+    return $published_version;
   }
 
   /**

@@ -105,6 +105,7 @@ class EntityLegalDocumentController extends EntityAPIControllerExportable {
         $view[$this->entityType][$key] = $published_version->view('full', NULL, TRUE);
       }
     }
+
     return $view;
   }
 }
@@ -118,8 +119,13 @@ class EntityLegalDocumentVersionController extends EntityAPIControllerExportable
    */
   public function create(array $values = array()) {
     global $user;
-    $values['uid'] = $user->uid;
-    $values['created'] = time();
+
+    if (empty($values['uid'])) {
+      $values['uid'] = $user->uid;
+    }
+    if (empty($values['created'])) {
+      $values['created'] = time();
+    }
 
     return parent::create($values);
   }
@@ -130,9 +136,8 @@ class EntityLegalDocumentVersionController extends EntityAPIControllerExportable
   public function save($entity, DatabaseTransaction $transaction = NULL) {
     if (!empty($entity->is_new)) {
       $entity->created = time();
+      $entity->updated = time();
     }
-
-    $entity->updated = time();
 
     return parent::save($entity, $transaction);
   }

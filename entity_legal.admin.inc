@@ -301,6 +301,7 @@ function entity_legal_document_version_form($form, &$form_state, EntityLegalDocu
  */
 function entity_legal_document_version_form_submit(&$form, &$form_state) {
   $version_entity = entity_ui_form_submit_build_entity($form, $form_state);
+  $version_entity->updated = time();
   $version_entity->save();
 
   $entity_legal_document = entity_load_single(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, $version_entity->document_name);

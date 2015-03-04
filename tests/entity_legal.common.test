@@ -17,8 +17,8 @@ abstract class EntityLegalTestCase extends DrupalWebTestCase {
    * {@inheritdoc}
    */
   protected function setUp() {
-    parent::setUp('entity', 'entity_legal');
-    $this->adminUser = $this->drupalCreateUser(array('administer entity legal', 'administer permissions'));
+    parent::setUp('entity', 'entity_legal', 'path');
+    $this->adminUser = $this->drupalCreateUser(array('administer entity legal', 'administer permissions', 'create url aliases'));
   }
 
   /**

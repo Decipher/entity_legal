@@ -54,12 +54,15 @@ class EntityLegalDocumentTestCase extends EntityLegalTestCase {
       'settings[new_users][require_method]' => 'form_inline',
       'settings[existing_users][require]' => 1,
       'settings[existing_users][require_method]' => 'redirect',
+      'path[alias]' => 'custom-legal-document-path',
     ), 'Next');
 
     // Load a reset version of the entity.
     $created_document = $this->getUncachedEntity(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, $test_name);
+    $document_uri = $created_document->uri();
 
     $this->assertTrue(!empty($created_document), 'Document was successfully created');
+    drupal_static_reset();
 
     if ($created_document) {
       $this->assertEqual($test_label, $created_document->label(), 'Label was saved correctly');
@@ -68,6 +71,8 @@ class EntityLegalDocumentTestCase extends EntityLegalTestCase {
       $this->assertEqual(1, $created_document->require_existing, 'Existing user requirement was saved correctly');
       $this->assertEqual('form_inline', $created_document->getSetting('new_users', 'require_method'), 'Existing user requirement was saved correctly');
       $this->assertEqual('redirect', $created_document->getSetting('existing_users', 'require_method'), 'Existing user requirement was saved correctly');
+
+      $this->assertEqual('custom-legal-document-path', drupal_get_path_alias($document_uri['path']), 'Path was set correctly');
     }
   }
 
@@ -84,15 +89,25 @@ class EntityLegalDocumentTestCase extends EntityLegalTestCase {
       ),
     ));
 
+    $document_uri = $document->uri();
+    $alias = array(
+      'source' => $document_uri['path'],
+      'alias' => $this->randomName(),
+    );
+    path_save($alias);
+    drupal_static_reset();
+
     $this->drupalLogin($this->adminUser);
     $this->drupalGet('admin/structure/legal/manage/' . $document->identifier());
 
     // Test field default values.
+    debug(drupal_get_path_alias($document_uri['path']));
     $this->assertFieldByName('label', $document->label(), 'Label is set correctly for document');
     $this->assertFieldByName('settings[new_users][require]', 1, 'Require new users set correctly');
     $this->assertFieldByName('settings[new_users][require_method]', 'form_inline', 'Require existing users set correctly');
     $this->assertFieldByName('settings[existing_users][require]', 1, 'Require existing users set correctly');
     $this->assertFieldByName('settings[existing_users][require_method]', 'redirect', 'Require existing users set correctly');
+    $this->assertFieldByName('path[alias]', drupal_get_path_alias($document_uri['path']), 'Path alias field set');
 
     // Test that changing values saves correctly.
     $new_label = $this->randomName();
@@ -102,15 +117,20 @@ class EntityLegalDocumentTestCase extends EntityLegalTestCase {
       'settings[new_users][require_method]' => 'form_link',
       'settings[existing_users][require]' => FALSE,
       'settings[existing_users][require_method]' => 'popup',
+      'path[alias]' => '',
     ), 'Save');
 
     $document = $this->getUncachedEntity(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, $document->identifier());
+    $document_uri = $document->uri();
+    drupal_static_reset();
 
     $this->assertEqual($new_label, $document->label(), 'Label was saved correctly');
     $this->assertEqual(0, $document->require_signup, 'Signup requirement was saved correctly');
     $this->assertEqual(0, $document->require_existing, 'Existing user requirement was saved correctly');
     $this->assertEqual('form_link', $document->getSetting('new_users', 'require_method'), 'Form link method was saved correctly');
     $this->assertEqual('popup', $document->getSetting('existing_users', 'require_method'), 'Popup require method was saved correctly');
+    $this->assertEqual($document_uri['path'], drupal_get_path_alias($document_uri['path']), 'Blank path alias reset to entity uri');
+
   }
 
   /**

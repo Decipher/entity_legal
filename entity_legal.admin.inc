@@ -46,7 +46,9 @@ function entity_legal_document_form($form, &$form_state, EntityLegalDocument $en
 
     foreach ($versions as $document_version_entity) {
       // Use the default uri if this version is the current published version.
-      if ($entity->getPublishedVersion() && $entity->getPublishedVersion()->identifier() == $document_version_entity->identifier()) {
+      if ($entity->getPublishedVersion() && $entity->getPublishedVersion()
+          ->identifier() == $document_version_entity->identifier()
+      ) {
         $entity_uri = $entity->uri();
         $path = $entity_uri['path'];
       }
@@ -181,12 +183,6 @@ function _entity_legal_document_form_add_path_settings(&$form, &$form_state, Ent
     }
   }
 
-  $path += array(
-    'pid' => NULL,
-    'source' => isset($form['#node']->nid) ? 'node/' . $form['#node']->nid : NULL,
-    'alias' => '',
-  );
-
   $form['path'] = array(
     '#type' => 'fieldset',
     '#title' => t('URL path settings'),
@@ -207,12 +203,24 @@ function _entity_legal_document_form_add_path_settings(&$form, &$form_state, Ent
   $form['path']['alias'] = array(
     '#type' => 'textfield',
     '#title' => t('URL alias'),
-    '#default_value' => $path['alias'],
+    '#default_value' => !empty($path['alias']) ? $path['alias'] : '',
     '#maxlength' => 255,
     '#description' => t('Optionally specify an alternative URL by which this content can be accessed. For example, type "about" when writing an about page. Use a relative path and don\'t add a trailing slash or the URL alias won\'t work.'),
   );
-  $form['path']['pid'] = array('#type' => 'value', '#value' => $path['pid']);
-  $form['path']['source'] = array('#type' => 'value', '#value' => $path['source']);
+
+  $form['path']['language'] = array(
+    '#type' => 'value',
+    '#value' => LANGUAGE_NONE,
+  );
+  $form['path']['pid'] = array(
+    '#type' => 'value',
+    '#value' => !empty($path['pid']) ? $path['pid'] : '',
+  );
+
+  $form['path']['source'] = array(
+    '#type' => 'value',
+    '#value' => !empty($path['source']) ? $path['source'] : '',
+  );
 }
 
 /**
@@ -230,18 +238,32 @@ function entity_legal_document_form_submit(&$form, &$form_state) {
 
   $document_entity->save();
 
-  if (!empty($form_state['values']['path']) && !empty($form_state['values']['path']['alias'])) {
+  if (!empty($form_state['values']['path'])) {
     $path = $form_state['values']['path'];
-    $path['alias'] = trim($path['alias']);
+    $alias = trim($path['alias']);
+    $pid = $path['pid'];
 
-    // Delete old alias if user erased it.
-    if (!empty($path['pid']) && empty($path['alias'])) {
-      path_delete($path['pid']);
+    // Compare new and old.
+    $original_alias = '';
+    if (!empty($pid)) {
+      $original_path = path_load(array('pid' => $pid));
+      $original_alias = $original_path['alias'];
     }
 
-    $default_uri = $document_entity->uri();
-    $path['source'] = $default_uri['path'];
-    path_save($path);
+    if ($alias != $original_alias) {
+      // Delete old alias.
+      if (!empty($pid)) {
+        path_delete($pid);
+      }
+
+      // Create new alias.
+      if (!empty($alias)) {
+        unset($path['pid']);
+        $default_uri = $document_entity->uri();
+        $path['source'] = $default_uri['path'];
+        path_save($path);
+      }
+    }
   }
 }
 

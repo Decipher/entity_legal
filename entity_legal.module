@@ -465,13 +465,13 @@ function entity_legal_form_user_register_form_submit(&$form, &$form_state) {
 function _entity_legal_document_methods($type) {
   $default_methods = array(
     'new_users' => array(
-      'form_link' => t('Checkbox on signup form with link to document'),
+      'form_link' => t('Checkbox on signup form'),
       'form_inline' => t('Checkbox on signup form with embedded document'),
     ),
     'existing_users' => array(
       'popup' => t('Popup on all pages until accepted'),
       'message' => t('Drupal warning message, prompting the user, until accepted'),
-      'redirect' => t('Redirect every page load to legal document until accepted'),
+      'redirect' => t('Redirect every page lo ad to legal document until accepted'),
     ),
   );
 

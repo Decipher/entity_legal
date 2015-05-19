@@ -139,7 +139,7 @@ class EntityLegalMethodsTestCase extends EntityLegalTestCase {
     $this->drupalGet('user/register');
     $this->assertFieldByName('legal_' . $document->identifier(), NULL, 'Agree checkbox found');
 
-    $this->assertRaw('<div class="entity entity-legal-document-version legal-document-version-' . $document->identifier(), 'Document markup found on register page');
+    $this->assertRaw('<div class="entity entity-entity-legal-document-version entity-legal-document-version-' . $document->identifier(), 'Document markup found on register page');
   }
 
   /**

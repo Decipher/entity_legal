@@ -192,7 +192,11 @@ class EntityLegalDocument extends Entity {
       $label = $published_version->acceptance_label;
     }
 
-    return check_plain($label);
+    if (module_exists('token') && module_exists('entity_token')) {
+      $label = token_replace($label, array('entity_legal_document' => $this));
+    }
+
+    return filter_xss($label);
   }
 
   /**

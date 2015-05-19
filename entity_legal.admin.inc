@@ -46,7 +46,9 @@ function entity_legal_document_form($form, &$form_state, EntityLegalDocument $en
 
     foreach ($versions as $document_version_entity) {
       // Use the default uri if this version is the current published version.
-      if ($entity->getPublishedVersion() && $entity->getPublishedVersion()->identifier() == $document_version_entity->identifier()) {
+      if ($entity->getPublishedVersion() && $entity->getPublishedVersion()
+          ->identifier() == $document_version_entity->identifier()
+      ) {
         $entity_uri = $entity->uri();
         $path = $entity_uri['path'];
       }
@@ -212,7 +214,10 @@ function _entity_legal_document_form_add_path_settings(&$form, &$form_state, Ent
     '#description' => t('Optionally specify an alternative URL by which this content can be accessed. For example, type "about" when writing an about page. Use a relative path and don\'t add a trailing slash or the URL alias won\'t work.'),
   );
   $form['path']['pid'] = array('#type' => 'value', '#value' => $path['pid']);
-  $form['path']['source'] = array('#type' => 'value', '#value' => $path['source']);
+  $form['path']['source'] = array(
+    '#type' => 'value',
+    '#value' => $path['source']
+  );
 }
 
 /**
@@ -273,14 +278,29 @@ function entity_legal_document_version_form($form, &$form_state, EntityLegalDocu
   $form['acceptance_label'] = array(
     '#title' => t('Acceptance label'),
     '#type' => 'textfield',
-    '#description' => t('e.g. I agree to the terms and conditions'),
-    '#default_value' => isset($entity->acceptance_label) ? $entity->acceptance_label : t('I agree'),
+    '#description' => t('e.g. I agree to the terms and conditions, use tokens to provide a link to the document.'),
     '#weight' => 50,
+  );
+
+  if (isset($entity->acceptance_label)) {
+    $form['acceptance_label']['#default_value'] = $entity->acceptance_label;
+  }
+  else {
+    $form['acceptance_label']['#default_value'] = t('I agree to the <a href="!token_url">@document_label</a> document', array(
+      '!token_url' => '[entity_legal_document:url]',
+      '@document_label' => $entity->getDocument()->label(TRUE),
+    ));
+  }
+
+  $form['token_help'] = array(
+    '#theme' => 'token_tree',
+    '#token_types' => array('entity_legal_document'),
+    '#weight' => 51
   );
 
   $form['actions'] = array(
     '#type' => 'actions',
-    '#weight' => 51,
+    '#weight' => 52,
   );
 
   $form['actions']['save'] = array(

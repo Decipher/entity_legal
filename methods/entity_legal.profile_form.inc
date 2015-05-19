@@ -40,13 +40,6 @@ class EntityLegalMethodProfileForm extends EntityLegalMethod {
       );
 
       switch ($document->getAcceptanceDeliveryMethod(TRUE)) {
-        case 'form_link':
-          $document_uri = $document->uri();
-          $form[$field_name]['#description'] = t('Read the document at !url', array(
-            '!url' => l(url($document_uri['path'], array('absolute' => TRUE)), $document_uri['path']),
-          ));
-          break;
-
         case 'form_inline':
           $document_render_array = entity_view(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME, array($document));
           $form[$field_name]['#prefix'] = render($document_render_array);

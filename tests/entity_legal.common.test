@@ -17,7 +17,7 @@ abstract class EntityLegalTestCase extends DrupalWebTestCase {
    * {@inheritdoc}
    */
   protected function setUp() {
-    parent::setUp('entity', 'entity_legal');
+    parent::setUp('entity', 'entity_legal', 'token', 'entity_token');
     $this->adminUser = $this->drupalCreateUser(array('administer entity legal', 'administer permissions'));
   }
 
@@ -70,7 +70,10 @@ abstract class EntityLegalTestCase extends DrupalWebTestCase {
     $entity->save();
 
     // Reset permissions cache to make new document permissions available.
-    $this->checkPermissions(array(), TRUE);
+    $this->checkPermissions(array(
+      $entity->getPermissionView(),
+      $entity->getPermissionExistingUser(),
+    ), TRUE);
 
     return $entity;
   }
@@ -91,7 +94,7 @@ abstract class EntityLegalTestCase extends DrupalWebTestCase {
       'name' => $this->randomName(64),
       'document_name' => $document->identifier(),
       'label' => $this->randomName(),
-      'acceptance_label' => $this->randomName(),
+      'acceptance_label' => 'I agree to the <a href="[entity_legal_document:url]">document</a>',
       'entity_legal_document_text' => array(
         LANGUAGE_NONE => array(
           array(

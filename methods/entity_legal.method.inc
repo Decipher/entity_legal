@@ -23,7 +23,7 @@ abstract class EntityLegalMethod {
    */
   public function getDocumentsForMethod($method, $user_type = ENTITY_LEGAL_USER_EXISTING) {
     // Entity Legal administrators should never be forced to accept documents.
-    if (user_access('administer legal documents')) {
+    if (user_access('administer entity legal')) {
       return array();
     }
 

@@ -116,14 +116,3 @@ class EntityLegalDocumentAcceptance extends ContentEntityBase implements EntityL
 //
 //  return parent::save($entity, $transaction);
 //}
-
-// @TODO - Is this check needed?
-///**
-// * {@inheritdoc}
-// */
-//public function create(array $values = array()) {
-//  if (empty($values['document_version_name'])) {
-//    throw new EntityFieldQueryException(t('Acceptance does not have a valid associated document version name'));
-//  }
-//  return parent::create($values);
-//}

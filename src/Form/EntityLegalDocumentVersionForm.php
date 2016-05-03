@@ -71,7 +71,6 @@ class EntityLegalDocumentVersionForm extends ContentEntityForm {
     $document = $this->entity->getDocument();
     if (!$document->getPublishedVersion()) {
       $document->setPublishedVersion($this->entity);
-      // @TODO - This appears to cause a weird issue with simpletest.
       $document->save();
     }
 

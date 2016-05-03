@@ -102,7 +102,7 @@ function entity_legal_token_info() {
  * Implements hook_tokens().
  */
 function entity_legal_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
-  $token_service = \Drupal::token();
+  $token_service = \Drupal::service('token');
 
   $replacements = [];
   switch ($type) {

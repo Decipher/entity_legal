@@ -52,13 +52,11 @@ class EntityLegalDocumentVersionForm extends ContentEntityForm {
       ]);
     }
 
-    if (\Drupal::moduleHandler()->moduleExists('token')) {
-      $form['token_help'] = [
-        '#theme'       => 'token_tree_link',
-        '#token_types' => ['entity_legal_document'],
-        '#weight'      => 51,
-      ];
-    }
+    $form['token_help'] = [
+      '#theme'       => 'token_tree_link',
+      '#token_types' => ['entity_legal_document'],
+      '#weight'      => 51,
+    ];
 
     return parent::form($form, $form_state);
   }

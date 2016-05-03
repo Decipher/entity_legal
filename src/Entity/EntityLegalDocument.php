@@ -272,9 +272,8 @@ class EntityLegalDocument extends ConfigEntityBundleBase implements EntityLegalD
       $label = $published_version->get('acceptance_label')->value;
     }
 
-//    if (\Drupal::moduleHandler()->moduleExists('token') && \Drupal::moduleHandler()->moduleExists('entity_token')) {
-//      $label = token_replace($label, array('entity_legal_document' => $this));
-//    }
+    $token_service = \Drupal::service('token');
+    $label = $token_service->replace($label, [ENTITY_LEGAL_DOCUMENT_ENTITY_NAME => $this]);
 
     return Xss::filter($label);
   }

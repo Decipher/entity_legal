@@ -29,8 +29,7 @@ abstract class EntityLegalTestBase extends WebTestBase {
    *
    * @var array
    */
-//  public static $modules = array('entity', 'entity_legal', 'token', 'entity_token', 'field_ui');
-  public static $modules = ['entity_legal', 'field_ui'];
+  public static $modules = ['block', 'entity_legal', 'field_ui', 'token'];
 
   /**
    * {@inheritdoc}

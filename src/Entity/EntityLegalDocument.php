@@ -91,6 +91,20 @@ class EntityLegalDocument extends ConfigEntityBundleBase implements EntityLegalD
    */
   protected $settings = [];
 
+  /**
+   * {@inheritdoc}
+   */
+  public function delete() {
+    if (!$this->isNew()) {
+      // Delete all associated versions.
+      $versions = $this->getAllVersions();
+      foreach ($versions as $version) {
+        $version->delete();
+      }
+    }
+
+    parent::delete();
+  }
 
   /**
    * {@inheritdoc}

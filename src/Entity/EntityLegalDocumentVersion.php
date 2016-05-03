@@ -102,6 +102,21 @@ class EntityLegalDocumentVersion extends ContentEntityBase implements EntityLega
   /**
    * {@inheritdoc}
    */
+  public function delete() {
+    if (!$this->isNew()) {
+      // Delete all acceptances.
+      $acceptances = $this->getAcceptances();
+      foreach ($acceptances as $acceptance) {
+        $acceptance->delete();
+      }
+    }
+
+    parent::delete();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getCreatedTime() {
     return $this->get('created')->value;
   }

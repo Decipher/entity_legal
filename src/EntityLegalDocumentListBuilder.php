@@ -9,6 +9,7 @@ namespace Drupal\entity_legal;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Link;
 
 /**
  * Defines a class to build a listing of entity legal document entities.
@@ -29,7 +30,13 @@ class EntityLegalDocumentListBuilder extends ConfigEntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    $row['label'] = $entity->label();
+    $label = Link::createFromRoute($entity->label(), 'entity.entity_legal_document.canonical', [
+      'entity_legal_document' => $entity->id(),
+    ])->toString();
+    $row['label'] = $this->t('@label <small>(Machine name: @id)</small>', [
+      '@label' => $label,
+      '@id'    => $entity->id(),
+    ]);
     return $row + parent::buildRow($entity);
   }
 

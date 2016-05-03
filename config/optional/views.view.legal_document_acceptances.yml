@@ -390,7 +390,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/structure/legal/manage/%/acceptances
+      path: admin/structure/legal/manage/%entity_legal_document/acceptances
       menu:
         type: tab
         title: Acceptances

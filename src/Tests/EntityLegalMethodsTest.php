@@ -29,7 +29,7 @@ class EntityLegalMethodsTest extends EntityLegalTestBase {
       '@title' => $document->getPublishedVersion()->label(),
     ]);
     /** @var \Drupal\Core\Url $document_url */
-    $document_url = $document->toUrl('canonical');
+    $document_url = $document->toUrl();
     $document_path = $document_url->toString();
 
     $account = $this->createUserWithAcceptancePermissions($document);
@@ -80,7 +80,7 @@ class EntityLegalMethodsTest extends EntityLegalTestBase {
     // Visit the document to agree as SimpleTest cannot properly submit using
     // the unprocessed markup from within the JS array.
     /** @var \Drupal\Core\Url $document_url */
-    $document_url = $document->toUrl('canonical');
+    $document_url = $document->toUrl();
     $document_path = $document_url->toString();
     $this->drupalPostForm($document_path, ['agree' => TRUE], 'Submit');
 
@@ -114,7 +114,7 @@ class EntityLegalMethodsTest extends EntityLegalTestBase {
     $this->assertFieldByName('legal_' . $document->id(), NULL, 'Agree checkbox found');
 
     /** @var \Drupal\Core\Url $document_url */
-    $document_url = $document->toUrl('canonical');
+    $document_url = $document->toUrl();
     $document_path = $document_url->toString();
 
     $this->assertLinkByHref($document_path, 0, 'Link to document found');
@@ -162,7 +162,7 @@ class EntityLegalMethodsTest extends EntityLegalTestBase {
     $this->drupalLogin($account);
 
     /** @var \Drupal\Core\Url $document_url */
-    $document_url = $document->toUrl('canonical');
+    $document_url = $document->toUrl();
     $document_path = $document_url->toString();
 
     $this->assertUrl($document_path, [

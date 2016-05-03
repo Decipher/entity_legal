@@ -238,7 +238,7 @@ class EntityLegalDocumentForm extends EntityForm implements ContainerInjectionIn
 
     $path = [];
     if (!$this->entity->isNew()) {
-      $conditions = ['source' => '/' . $this->entity->toUrl('canonical')->getInternalPath()];
+      $conditions = ['source' => '/' . $this->entity->toUrl()->getInternalPath()];
       $path = $this->aliasStorage->load($conditions);
       if ($path === FALSE) {
         $path = [];
@@ -246,7 +246,7 @@ class EntityLegalDocumentForm extends EntityForm implements ContainerInjectionIn
     }
     $path += [
       'pid'    => NULL,
-      'source' => !$this->entity->isNew() ? '/' . $this->entity->toUrl('canonical')->getInternalPath() : NULL,
+      'source' => !$this->entity->isNew() ? '/' . $this->entity->toUrl()->getInternalPath() : NULL,
       'alias'  => '',
     ];
 

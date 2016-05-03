@@ -28,7 +28,7 @@ class Redirect extends EntityLegalPluginBase {
     /** @var \Drupal\entity_legal\EntityLegalDocumentInterface $document */
     foreach ($this->documents as $document) {
       /** @var \Drupal\Core\Url $entity_url */
-      $entity_url = $document->toUrl('canonical');
+      $entity_url = $document->toUrl();
 
       // Only redirect if the legal document isn't currently being viewed.
       $current_route = \Drupal::routeMatch();

@@ -281,6 +281,23 @@ class EntityLegalDocument extends ConfigEntityBundleBase implements EntityLegalD
   /**
    * {@inheritdoc}
    */
+  public function toUrl($rel = 'canonical', array $options = []) {
+    // Unless language was already provided, avoid setting an explicit language.
+    $options += ['language' => NULL];
+    return parent::toUrl($rel, $options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function url($rel = 'canonical', $options = array()) {
+    // Do not remove this override: the default value of $rel is different.
+    return parent::url($rel, $options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function userMustAgree($new_user = FALSE, AccountInterface $account = NULL) {
     // User cannot agree unless there is a published version.
     if (!$this->getPublishedVersion()) {

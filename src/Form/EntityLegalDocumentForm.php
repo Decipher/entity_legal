@@ -264,6 +264,7 @@ class EntityLegalDocumentForm extends EntityForm implements ContainerInjectionIn
       '#weight'           => 5,
       '#tree'             => TRUE,
       '#element_validate' => [['\Drupal\path\Plugin\Field\FieldWidget\PathWidget', 'validateFormElement']],
+      '#parents'          => ['path', 0],
     ];
 
     $form['path']['alias'] = [
@@ -304,8 +305,8 @@ class EntityLegalDocumentForm extends EntityForm implements ContainerInjectionIn
       $form_state->setRedirect('entity.entity_legal_document_version.add_form', ['entity_legal_document' => $this->entity->id()]);
     }
 
-    if (!empty($form_state->getValues()['path']) && (!empty($form_state->getValues()['path']['alias']) || !empty($form_state->getValues()['path']['pid']))) {
-      $path = $form_state->getValues()['path'];
+    if (!empty($form_state->getValues()['path'][0]) && (!empty($form_state->getValues()['path'][0]['alias']) || !empty($form_state->getValues()['path'][0]['pid']))) {
+      $path = $form_state->getValues()['path'][0];
       $path['alias'] = trim($path['alias']);
       $path['source'] = $this->entity->toUrl()->toString();
 

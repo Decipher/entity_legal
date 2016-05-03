@@ -46,10 +46,10 @@ class EntityLegalDocumentVersionForm extends ContentEntityForm {
       $form['acceptance_label']['#default_value'] = $this->entity->get('acceptance_label')->value;
     }
     else {
-      $form['acceptance_label']['#default_value'] = t('I agree to the <a href=":token_url">@document_label</a> document', [
-        ':token_url'      => '[entity_legal_document:url]',
+      $form['acceptance_label']['#default_value'] = $this->t('I agree to the <a href="@token_url">@document_label</a> document', [
+        '@token_url'      => '[entity_legal_document:url]',
         '@document_label' => $this->entity->getDocument()->label(),
-      ]);
+      ])->render();
     }
 
     $form['token_help'] = [

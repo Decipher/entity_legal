@@ -71,7 +71,7 @@ class EntityLegalDocumentVersionTest extends EntityLegalTestBase {
       $this->assertEqual($acceptance_label, $created_version->get('acceptance_label')->value, 'Acceptance label saved correctly');
       $this->assertEqual($document_text, $created_version->get('entity_legal_document_text')[0]->value, 'Document text is correct');
       $this->assertEqual($document->id(), $created_version->bundle(), 'Corresponding document is set correctly');
-      $this->assertEqual($document->getPublishedVersion(), $created_version->id(), 'Published version set on document');
+      $this->assertEqual($document->getPublishedVersion()->id(), $created_version->id(), 'Published version set on document');
     }
   }
 
@@ -101,6 +101,7 @@ class EntityLegalDocumentVersionTest extends EntityLegalTestBase {
       'acceptance_label'                     => $new_acceptance_label,
     ], 'Save');
 
+    /** @var \Drupal\entity_legal\EntityLegalDocumentVersionInterface $version */
     $version = $this->getUncachedEntity(ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME, $version->id());
     $this->assertEqual($new_label, $version->label(), 'Label was saved correctly');
     $this->assertEqual($new_text, $version->get('entity_legal_document_text')[0]->value, 'Document tex was saved correctly');

@@ -44,7 +44,11 @@ abstract class EntityLegalTestBase extends WebTestBase {
       'administer users',
     ]);
 
-    // @TODO - Ensure local tasks block present if profile isn't 'standard'.
+    // Ensure relevant blocks present if profile isn't 'standard'.
+    if ($this->profile !== 'standard') {
+      $this->drupalPlaceBlock('local_actions_block');
+      $this->drupalPlaceBlock('page_title_block');
+    }
   }
 
   /**

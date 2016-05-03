@@ -13,6 +13,7 @@ use Drupal\entity_legal\EntityLegalDocumentInterface;
 use Drupal\entity_legal\EntityLegalDocumentVersionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class EntityLegalController.
@@ -69,6 +70,9 @@ class EntityLegalController extends ControllerBase {
   public function documentPage(EntityLegalDocumentInterface $entity_legal_document, EntityLegalDocumentVersionInterface $entity_legal_document_version = NULL) {
     if (is_null($entity_legal_document_version)) {
       $entity_legal_document_version = $entity_legal_document->getPublishedVersion();
+      if (!$entity_legal_document_version) {
+        throw new NotFoundHttpException();
+      }
     }
 
     // If specified version is unpublished, display a message.

@@ -307,6 +307,7 @@ class EntityLegalDocumentForm extends EntityForm implements ContainerInjectionIn
     if (!empty($form_state->getValues()['path']) && (!empty($form_state->getValues()['path']['alias']) || !empty($form_state->getValues()['path']['pid']))) {
       $path = $form_state->getValues()['path'];
       $path['alias'] = trim($path['alias']);
+      $path['source'] = $this->entity->toUrl()->toString();
 
       // Delete old alias if user erased it.
       if (!empty($path['pid']) && empty($path['alias'])) {

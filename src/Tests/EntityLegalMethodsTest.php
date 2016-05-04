@@ -7,6 +7,8 @@
 
 namespace Drupal\entity_legal\Tests;
 
+use Drupal\Core\Url;
+
 /**
  * Tests methods of encouraging users to accept legal documents.
  *
@@ -164,11 +166,15 @@ class EntityLegalMethodsTest extends EntityLegalTestBase {
 
     /** @var \Drupal\Core\Url $document_url */
     $document_url = $document->toUrl();
+    $document_url->setAbsolute();
     $document_path = $document_url->toString();
+
+    /** @var \Drupal\user\UserInterface $user */
+    $user = \Drupal::entityTypeManager()->getStorage('user')->load($account->id());
 
     $this->assertUrl($document_path, [
       'query' => [
-        'destination' => '/user/' . $account->id(),
+        'destination' => $user->toUrl()->toString(),
       ],
     ], 'User was redirected to legal document after login');
 
@@ -176,7 +182,7 @@ class EntityLegalMethodsTest extends EntityLegalTestBase {
 
     $this->assertUrl($document_path, [
       'query' => [
-        'destination' => '/user/' . $account->id(),
+        'destination' => $user->toUrl()->toString(),
       ],
     ], 'User was forcefully redirected to legal document after navigation');
 
@@ -184,7 +190,7 @@ class EntityLegalMethodsTest extends EntityLegalTestBase {
 
     $this->drupalGet('');
 
-    $this->assertUrl('/user/' . $account->id(), [], 'User is free to navigate the site after acceptance');
+    $this->assertUrl($user->toUrl()->setAbsolute()->toString(), [], 'User is free to navigate the site after acceptance');
   }
 
 }

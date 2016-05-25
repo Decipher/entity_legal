@@ -40,6 +40,9 @@ use Drupal\entity_legal\EntityLegalDocumentVersionInterface;
  *     "uuid" = "uuid",
  *     "bundle" = "document_name"
  *   },
+ *   links = {
+ *     "canonical" = "/legal/document/{entity_legal_document}/{entity_legal_document_version}",
+ *   },
  *   bundle_entity_type = "entity_legal_document",
  * )
  */
@@ -158,6 +161,19 @@ class EntityLegalDocumentVersion extends ContentEntityBase implements EntityLega
    */
   public function getDocument() {
     return \Drupal::entityTypeManager()->getStorage(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME)->load($this->bundle());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function urlRouteParameters($rel) {
+    $uri_route_parameters = parent::urlRouteParameters($rel);
+
+    if ($rel == 'canonical') {
+      $uri_route_parameters['entity_legal_document'] = $this->bundle();
+    }
+
+    return $uri_route_parameters;
   }
 
 }

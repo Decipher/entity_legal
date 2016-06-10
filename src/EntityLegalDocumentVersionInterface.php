@@ -35,6 +35,17 @@ interface EntityLegalDocumentVersionInterface extends ContentEntityInterface {
   public function getCreatedTime();
 
   /**
+   * Get the default document version name value.
+   *
+   * @param EntityLegalDocumentVersionInterface $entity
+   *   The Entity legal document version entity.
+   *
+   * @return string
+   *   The default document version name.
+   */
+  public static function getDefaultName(EntityLegalDocumentVersionInterface $entity);
+
+  /**
    * Get attached document entity.
    *
    * @return EntityLegalDocumentInterface

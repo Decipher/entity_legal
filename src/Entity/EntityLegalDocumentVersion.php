@@ -34,7 +34,7 @@ use Drupal\entity_legal\EntityLegalDocumentVersionInterface;
  *   data_table = "entity_legal_document_version_data",
  *   translatable = TRUE,
  *   entity_keys = {
- *     "id" = "vid",
+ *     "id" = "name",
  *     "label" = "label",
  *     "langcode" = "langcode",
  *     "uuid" = "uuid",
@@ -54,11 +54,13 @@ class EntityLegalDocumentVersion extends ContentEntityBase implements EntityLega
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
-    $fields['vid'] = BaseFieldDefinition::create('integer')
-      ->setLabel(t('Entity ID'))
+    $fields['name'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Name'))
       ->setDescription(t('The entity ID of this document.'))
       ->setReadOnly(TRUE)
-      ->setSetting('unsigned', TRUE);
+      ->setSetting('max_length', 64)
+      ->setSetting('unsigned', TRUE)
+      ->setDefaultValueCallback('Drupal\entity_legal\Entity\EntityLegalDocumentVersion::getDefaultName');
 
     $fields['langcode'] = BaseFieldDefinition::create('language')
       ->setLabel(t('Language'))
@@ -127,13 +129,22 @@ class EntityLegalDocumentVersion extends ContentEntityBase implements EntityLega
   /**
    * {@inheritdoc}
    */
+  public static function getDefaultName(EntityLegalDocumentVersionInterface $entity) {
+    return $entity->bundle() . '_' . time();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getFormattedDate($type = 'changed') {
     switch ($type) {
       case 'changed':
-        return \Drupal::service('date.formatter')->format($this->getChangedTime());
+        return \Drupal::service('date.formatter')
+          ->format($this->getChangedTime());
 
       case 'created':
-        return \Drupal::service('date.formatter')->format($this->getCreatedTime());
+        return \Drupal::service('date.formatter')
+          ->format($this->getCreatedTime());
     }
   }
 
@@ -150,7 +161,9 @@ class EntityLegalDocumentVersion extends ContentEntityBase implements EntityLega
 
     $results = $query->execute();
     if (!empty($results)) {
-      return \Drupal::entityTypeManager()->getStorage(ENTITY_LEGAL_DOCUMENT_ACCEPTANCE_ENTITY_NAME)->loadMultiple($results);
+      return \Drupal::entityTypeManager()
+        ->getStorage(ENTITY_LEGAL_DOCUMENT_ACCEPTANCE_ENTITY_NAME)
+        ->loadMultiple($results);
     }
 
     return [];
@@ -160,7 +173,9 @@ class EntityLegalDocumentVersion extends ContentEntityBase implements EntityLega
    * {@inheritdoc}
    */
   public function getDocument() {
-    return \Drupal::entityTypeManager()->getStorage(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME)->load($this->bundle());
+    return \Drupal::entityTypeManager()
+      ->getStorage(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME)
+      ->load($this->bundle());
   }
 
   /**

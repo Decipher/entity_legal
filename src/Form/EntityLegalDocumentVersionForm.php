@@ -35,6 +35,18 @@ class EntityLegalDocumentVersionForm extends ContentEntityForm {
       '#required'      => TRUE,
     ];
 
+    $form['name'] = [
+      '#type'          => 'machine_name',
+      '#title'         => t('Machine-readable name'),
+      '#required'      => TRUE,
+      '#default_value' => !$this->entity->isNew() ? $this->entity->id() : $this->entity->getDefaultName($this->entity),
+      '#machine_name'  => [
+        'exists' => '\Drupal\entity_legal\Entity\EntityLegalDocumentVersion::load',
+      ],
+      '#disabled'      => !$this->entity->isNew(),
+      '#maxlength'     => 64,
+    ];
+
     $form['acceptance_label'] = [
       '#title'       => t('Acceptance label'),
       '#type'        => 'textfield',

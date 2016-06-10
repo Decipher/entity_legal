@@ -129,6 +129,7 @@ abstract class EntityLegalTestBase extends WebTestBase {
       ->getStorage(ENTITY_LEGAL_DOCUMENT_VERSION_ENTITY_NAME)
       ->create([
         'label'                      => $this->randomMachineName(),
+        'name'                       => $this->randomMachineName(64),
         'document_name'              => $document->id(),
         'acceptance_label'           => 'I agree to the <a href="[entity_legal_document:url]">document</a>',
         'entity_legal_document_text' => [['value' => $this->randomMachineName()]],

@@ -59,14 +59,10 @@ class EntityLegalDocumentAcceptance extends ContentEntityBase implements EntityL
       ->setLabel(t('Date accepted'))
       ->setDescription(t('The date the document was accepted.'));
 
-//      'data' => array(
-//        'description' => 'A dump of user data to help verify acceptances.',
-//        'type' => 'text',
-//        'not null' => FALSE,
-//        'size' => 'big',
-//        'serialize' => TRUE,
-//        'merge' => FALSE,
-//      ),
+    $fields['data'] = BaseFieldDefinition::create('string_long')
+      ->setLabel(t('Data'))
+      ->setDescription('A dump of user data to help verify acceptances.')
+      ->setDefaultValueCallback('Drupal\entity_legal\Entity\EntityLegalDocumentAcceptance::getData');
 
     return $fields;
   }
@@ -81,6 +77,13 @@ class EntityLegalDocumentAcceptance extends ContentEntityBase implements EntityL
    */
   public static function getCurrentUserId() {
     return [\Drupal::currentUser()->id()];
+  }
+
+  /**
+   * Default value callback for 'data' base field definition.
+   */
+  public static function getData() {
+    return serialize($_SERVER);
   }
 
   /**
@@ -102,17 +105,3 @@ class EntityLegalDocumentAcceptance extends ContentEntityBase implements EntityL
   }
 
 }
-
-// @TODO - Should be storing the $_SERVER variables.
-///**
-// * {@inheritdoc}
-// *
-// * Adds legal document identifier and revision values to the acceptance
-// * entity.
-// */
-//public function save($entity, DatabaseTransaction $transaction = NULL) {
-//  // Dump all available data from the current users browsing session.
-//  $entity->data = $_SERVER;
-//
-//  return parent::save($entity, $transaction);
-//}

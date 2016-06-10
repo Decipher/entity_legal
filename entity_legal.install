@@ -8,7 +8,7 @@
 /**
  * Change document version primary key to 'name'.
  */
-function entity_legal_update_8000() {
+function entity_legal_update_8100() {
   $update_manager = \Drupal::entityDefinitionUpdateManager();
   $entity_manager = \Drupal::entityTypeManager();
 
@@ -51,10 +51,12 @@ function entity_legal_update_8000() {
         'document_version_name' => $map['versions'][$map['acceptances'][$id]],
         'uid'                   => $document_acceptance->get('uid'),
         'acceptance_date'       => $document_acceptance->get('acceptance_date'),
+        'data'                  => isset($document_acceptance->getFields()['data']) ? $document_acceptance->get('data') : '',
       ])->save();
   }
 
-  $documents = $entity_manager->getStorage(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME)->loadMultiple();
+  $documents = $entity_manager->getStorage(ENTITY_LEGAL_DOCUMENT_ENTITY_NAME)
+    ->loadMultiple();
   /** @var \Drupal\entity_legal\EntityLegalDocumentInterface $document */
   foreach ($documents as $document) {
     $document->set('published_version', $map['versions'][$document->get('published_version')]);

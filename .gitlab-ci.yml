@@ -1,0 +1,10 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+test:
+  stage: test
+  script:
+    - docker pull deciphered/dcir-5.6:develop > /dev/null
+    - docker run -v $(pwd):/dcir -i deciphered/dcir-5.6:develop

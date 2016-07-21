@@ -1,0 +1,9 @@
+---
+
+steps:
+  - name: Install Docker
+    plugin: Shell
+    command: 'sudo apt-get update && sudo apt-get install linux-image-extra-$(uname -r) -y && sudo apt-get update && sudo apt-get install docker-engine && sudo service docker start'
+  - name: Run DCIR
+    plugin: Shell
+    command: 'which docker'

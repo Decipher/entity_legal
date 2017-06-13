@@ -38,6 +38,25 @@ function entity_legal_preprocess_page(&$variable) {
 }
 
 /**
+ * Implements hook_form_alter().
+ */
+function entity_legal_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $context = ['form' => &$form];
+
+  if (preg_match('/^(user_registration_type_)([\w_]*)(form)$/', $form_id) == 1) {
+    // Execute Profile Form method plugin.
+    \Drupal::service('plugin.manager.entity_legal')
+      ->createInstance('form_link')
+      ->execute($context);
+
+    // Execute Profile Form Embedded method plugin.
+    \Drupal::service('plugin.manager.entity_legal')
+      ->createInstance('form_inline')
+      ->execute($context);
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function entity_legal_form_user_register_form_alter(&$form, &$form_state) {
